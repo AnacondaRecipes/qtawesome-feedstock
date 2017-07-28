@@ -17,6 +17,8 @@ requirements:
   host:
     - python >=3.6
     - pip
+  build:
+      - {{ cdt('mesa-libgl') }}  # [linux]
   run:
     - python >=3.6
     - qtpy
@@ -24,6 +26,7 @@ requirements:
 test:
   requires:
     - pyqt
+    - {{ cdt('mesa-libgl-devel') }}  # [linux]
   imports:
     - qtawesome
 
