@@ -15,9 +15,11 @@ build:
     script: python setup.py install --single-version-externally-managed --record record.txt
 
 requirements:
-    build:
+    host:
         - python
         - setuptools
+    build:
+        - {{ cdt('mesa-libgl') }}
     run:
         - six
         - python
@@ -26,6 +28,7 @@ requirements:
 test:
     requires:
         - pyqt
+        - {{ cdt('mesa-libgl-devel') }}
     imports:
         - qtawesome
 
