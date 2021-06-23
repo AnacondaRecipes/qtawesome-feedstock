@@ -15,11 +15,13 @@ build:
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
 
 requirements:
+  #build:
+  #    - {{ cdt('mesa-libgl') }}  # [linux]
   host:
     - python >=3.6
     - pip
-  build:
-      - {{ cdt('mesa-libgl') }}  # [linux]
+    - setuptools
+    - wheel
   run:
     - python >=3.6
     - qtpy
@@ -27,15 +29,17 @@ requirements:
 test:
   requires:
     - pyqt
-    - {{ cdt('mesa-libgl-devel') }}  # [linux]
+    #- {{ cdt('mesa-libgl-devel') }}  # [linux]
   imports:
     - qtawesome
 
 about:
   home: https://github.com/spyder-ide/qtawesome
   license: MIT
+  license_family: MIT
   license_file: LICENSE.txt
   summary: Iconic fonts in PyQt and PySide applications
+  dev_url: https://github.com/spyder-ide/qtawesome
 
 extra:
   recipe-maintainers:
