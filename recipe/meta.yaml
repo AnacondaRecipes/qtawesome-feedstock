@@ -11,6 +11,7 @@ source:
 build:
   number: 0
   skip: true  # [ppc64le]
+  skip: true  # [linux-s390x]
   noarch: python
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
 
@@ -28,6 +29,9 @@ test:
   requires:
     - pyqt
     - {{ cdt('mesa-libgl-devel') }}  # [linux]
+    - pip
+  commands:
+    - pip check
   imports:
     - qtawesome
 
@@ -36,6 +40,8 @@ about:
   license: MIT
   license_file: LICENSE.txt
   summary: Iconic fonts in PyQt and PySide applications
+  dev_url: https://github.com/spyder-ide/qtawesome
+  doc_url: https://qtawesome.readthedocs.io/en/latest
 
 extra:
   recipe-maintainers:
