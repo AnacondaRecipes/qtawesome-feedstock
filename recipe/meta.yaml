@@ -11,7 +11,7 @@ source:
 build:
   number: 0
   skip: true  # [ppc64le]
-  skip: true  # [linux-s390x]
+  skip: true  # [s390x]
   noarch: python
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
 
