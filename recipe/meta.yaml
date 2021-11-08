@@ -1,4 +1,4 @@
-{% set version = "1.0.2" %}
+{% set version = "1.1.0" %}
 
 package:
   name: qtawesome
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/q/qtawesome/QtAwesome-{{ version }}.tar.gz
-  sha256: 771dd95ac4f50d647d18b4e892fd310a580b56d258476554c7b3498593dfd887
+  sha256: 3fc6eb9327f96ded8e0d291dad4f7a543394c53bff8f9f4badd7433181581a8b
 
 build:
   number: 0
