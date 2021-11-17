@@ -1,4 +1,4 @@
-{% set version = "1.0.2" %}
+{% set version = "1.0.3" %}
 
 package:
   name: qtawesome
@@ -6,20 +6,23 @@ package:
 
 source:
   url: https://pypi.io/packages/source/q/qtawesome/QtAwesome-{{ version }}.tar.gz
-  sha256: 771dd95ac4f50d647d18b4e892fd310a580b56d258476554c7b3498593dfd887
+  sha256: d37bbeb69ddc591e5ff036b741bda8d1d92133811f1f5a7150021506f70b8e6e
 
 build:
   number: 0
-  skip: true  # [ppc64le]
+  skip: true  # [ppc64le or s390x]
   noarch: python
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
-
+  entry_points:
+    - qta-browser=qtawesome.icon_browser:run
 requirements:
   host:
-    - python >=3.6
+    - python
     - pip
+    - setuptools
+    - wheel
   build:
-      - {{ cdt('mesa-libgl') }}  # [linux]
+    - {{ cdt('mesa-libgl') }}  # [linux]
   run:
     - python >=3.6
     - qtpy
@@ -28,6 +31,10 @@ test:
   requires:
     - pyqt
     - {{ cdt('mesa-libgl-devel') }}  # [linux]
+    - pip
+    - python <3.10
+  commands:
+    - pip check
   imports:
     - qtawesome
 
@@ -35,7 +42,10 @@ about:
   home: https://github.com/spyder-ide/qtawesome
   license: MIT
   license_file: LICENSE.txt
+  license_family: MIT
   summary: Iconic fonts in PyQt and PySide applications
+  dev_url: https://github.com/spyder-ide/qtawesome
+  doc_url: https://qtawesome.readthedocs.io/en/latest
 
 extra:
   recipe-maintainers:
