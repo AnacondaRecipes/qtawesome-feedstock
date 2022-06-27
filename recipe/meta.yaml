@@ -10,8 +10,8 @@ source:
 
 build:
   number: 0
-  skip: true  # [ppc64le or s390x]
-  noarch: python
+  # we did not support earlier versions of qtawesome for ppc64le or s390x
+  skip: true  # [ppc64le or s390x or py<36]
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
   entry_points:
     - qta-browser=qtawesome.icon_browser:run
@@ -24,7 +24,7 @@ requirements:
   build:
     - {{ cdt('mesa-libgl') }}  # [linux]
   run:
-    - python >=3.6
+    - python
     - qtpy
 
 test:
@@ -32,7 +32,7 @@ test:
     - pyqt
     - {{ cdt('mesa-libgl-devel') }}  # [linux]
     - pip
-    - python <3.10
+    - python
   commands:
     - pip check
   imports:
