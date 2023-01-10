@@ -1,4 +1,4 @@
-{% set version = "1.0.3" %}
+{% set version = "1.2.2" %}
 
 package:
   name: qtawesome
@@ -6,15 +6,15 @@ package:
 
 source:
   url: https://pypi.io/packages/source/q/qtawesome/QtAwesome-{{ version }}.tar.gz
-  sha256: d37bbeb69ddc591e5ff036b741bda8d1d92133811f1f5a7150021506f70b8e6e
+  sha256: 97b6c66456592195494993d60ac82cc6b85fe49bfd1f12973eb2ad1fee20fa3f
 
 build:
   number: 0
   skip: true  # [ppc64le or s390x]
-  noarch: python
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
   entry_points:
     - qta-browser=qtawesome.icon_browser:run
+
 requirements:
   host:
     - python
@@ -24,7 +24,7 @@ requirements:
   build:
     - {{ cdt('mesa-libgl') }}  # [linux]
   run:
-    - python >=3.6
+    - python
     - qtpy
 
 test:
@@ -32,7 +32,6 @@ test:
     - pyqt
     - {{ cdt('mesa-libgl-devel') }}  # [linux]
     - pip
-    - python <3.10
   commands:
     - pip check
   imports:
