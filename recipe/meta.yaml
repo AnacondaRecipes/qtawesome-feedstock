@@ -11,7 +11,7 @@ source:
 build:
   number: 0
   skip: true  # [py<37 or ppc64le or s390x]
-  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
+  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir --no-build-isolation -vvv
   entry_points:
     - qta-browser=qtawesome.icon_browser:run
 
@@ -43,6 +43,7 @@ about:
   license_file: LICENSE.txt
   license_family: MIT
   summary: Iconic fonts in PyQt and PySide applications
+  description: QtAwesome enables iconic fonts such as Font Awesome and Elusive Icons in PyQt and PySide applications.
   dev_url: https://github.com/spyder-ide/qtawesome
   doc_url: https://qtawesome.readthedocs.io
 
