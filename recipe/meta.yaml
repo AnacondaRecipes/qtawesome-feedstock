@@ -1,4 +1,4 @@
-{% set version = "1.2.2" %}
+{% set version = "1.3.1" %}
 
 package:
   name: qtawesome
@@ -6,12 +6,11 @@ package:
 
 source:
   url: https://pypi.io/packages/source/q/qtawesome/QtAwesome-{{ version }}.tar.gz
-  sha256: 97b6c66456592195494993d60ac82cc6b85fe49bfd1f12973eb2ad1fee20fa3f
+  sha256: 075b2c9ee01cbaf5e3a4bebed0e5529ee8605981355f21dea051b15c1b869e1b
 
 build:
   number: 0
-  skip: true  # [ppc64le or s390x]
-  skip: true  # [py<37]
+  skip: true  # [py<37 or ppc64le or s390x]
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
   entry_points:
     - qta-browser=qtawesome.icon_browser:run
@@ -45,7 +44,7 @@ about:
   license_family: MIT
   summary: Iconic fonts in PyQt and PySide applications
   dev_url: https://github.com/spyder-ide/qtawesome
-  doc_url: https://qtawesome.readthedocs.io/en/latest
+  doc_url: https://qtawesome.readthedocs.io
 
 extra:
   recipe-maintainers:
