@@ -28,6 +28,8 @@ requirements:
 
 test:
   requires:
+    - pyqt
+    - {{ cdt('mesa-libgl-devel') }}  # [linux]
     - pip
   commands:
     - pip check
