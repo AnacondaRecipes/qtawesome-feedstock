@@ -28,16 +28,9 @@ requirements:
 
 test:
   requires:
-    - pyqt
-    - {{ cdt('libglvnd-egl') }}               # [linux and aarch64]
-    - {{ cdt('libglvnd-glx') }}               # [linux and aarch64]
-    - {{ cdt('libglvnd-opengl') }}            # [linux and aarch64]
-    - {{ cdt('libglvnd') }}                   # [linux and aarch64]
-    - {{ cdt('mesa-libegl-devel') }}          # [linux]
-    - {{ cdt('mesa-libegl') }}                # [linux]
-    - {{ cdt('mesa-libgl-devel') }}           # [linux]
-    - {{ cdt('mesa-libgl') }}                 # [linux]
-    - {{ cdt('mesa-libgbm') }}                # [linux]
+    # testing pyqt 6 requires additional cdts.
+    - pyqt <6
+    - {{ cdt('mesa-libgl-devel') }}  # [linux]
     - pip
   commands:
     - pip check
