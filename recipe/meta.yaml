@@ -15,6 +15,7 @@ build:
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir --no-build-isolation -vvv
   entry_points:
     - qta-browser=qtawesome.icon_browser:run
+    - qta-install-fonts-all-users=qtawesome:install_bundled_fonts_system_wide
 
 requirements:
   host:
