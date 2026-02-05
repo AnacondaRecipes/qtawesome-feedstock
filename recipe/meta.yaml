@@ -39,7 +39,7 @@ test:
     - qta-install-fonts-all-users --help
     # pyargs not working, tests folder is not in the site-packages dir
     # fonts in the correct place inside the site-packages dir, rather than an exact path match in the tests.
-    - pytest -vvv qtawesome/tests --deselect=qtawesome/tests/test_qtawesome.py::test_get_fonts_info
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c pytest -vvv qtawesome/tests --deselect=qtawesome/tests/test_qtawesome.py::test_get_fonts_info
   requires:
     # The qtpy package (a dependency of qtawesome) is an abstraction layer
     # that works with multiple Qt bindings, but it doesn't install any of them by default.
