@@ -49,7 +49,7 @@ test:
     #- qta-browser --version
     - qta-install-fonts-all-users --help
     # pyargs not working, tests folder is not in the site-packages dir
-    - DISPLAY=localhost:1.0 xvfb-run -a bash -c pytest -vvv qtawesome/tests {{ deselect_tests }}  # [linux]
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c "pytest -vvv qtawesome/tests{{ deselect_tests }}"  # [linux]
     - pytest -vvv qtawesome/tests {{ deselect_tests }}  # [not linux]
   requires:
     # The qtpy package (a dependency of qtawesome) is an abstraction layer
