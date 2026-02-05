@@ -27,6 +27,17 @@ requirements:
     - python
     - qtpy
 
+# fonts in the correct place inside the site-packages dir, rather than an exact path match in the tests:
+{% set deselect_tests = " --deselect=qtawesome/tests/test_qtawesome.py::test_get_fonts_info" %}
+# If you are on Windows, please read https://support.microsoft.com/en-us/kb/3053676 to know how to prevent Windows from blocking the fonts that come with QtAwesome.
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_bundled_font_system_installation" %}  # [win]
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_font_load_from_system_fonts" %}  # [win]
+# E   AttributeError: type object 'QApplication' has no attribute 'desktop'
+# QApplication.desktop() has been removed in Qt 6.
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_browser_init" %}  # [osx]
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_copy" %}  # [osx]
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_filter" %}  # [osx]
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_filter_no_results" %}  # [osx]
 test:
   source_files:
     - qtawesome/tests
@@ -38,8 +49,8 @@ test:
     #- qta-browser --version
     - qta-install-fonts-all-users --help
     # pyargs not working, tests folder is not in the site-packages dir
-    # fonts in the correct place inside the site-packages dir, rather than an exact path match in the tests.
-    - DISPLAY=localhost:1.0 xvfb-run -a bash -c pytest -vvv qtawesome/tests --deselect=qtawesome/tests/test_qtawesome.py::test_get_fonts_info
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c pytest -vvv qtawesome/tests {{ deselect_tests }}  # [linux]
+    - pytest -vvv qtawesome/tests {{ deselect_tests }}  # [not linux]
   requires:
     # The qtpy package (a dependency of qtawesome) is an abstraction layer
     # that works with multiple Qt bindings, but it doesn't install any of them by default.
