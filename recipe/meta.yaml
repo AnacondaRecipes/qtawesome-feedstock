@@ -1,21 +1,21 @@
 {% set name = "qtawesome" %}
-{% set version = "1.4.0" %}
+{% set version = "1.4.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/qtawesome-{{ version }}.tar.gz
-  sha256: 783e414d1317f3e978bf67ea8e8a1b1498bad9dbd305dec814027e3b50521be6
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: d6c5aa545b614fc562769e9eeadf18530e08b8eebe28af4ab5d38131194c9c7b
 
 build:
   number: 0
-  skip: true  # [py<37]
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir --no-build-isolation -vvv
   entry_points:
     - qta-browser=qtawesome.icon_browser:run
     - qta-install-fonts-all-users=qtawesome:install_bundled_fonts_system_wide
+  skip: true  # [py<37]
 
 requirements:
   host:
@@ -27,16 +27,41 @@ requirements:
     - python
     - qtpy
 
+# fonts in the correct place inside the site-packages dir, rather than an exact path match in the tests:
+{% set deselect_tests = " --deselect=qtawesome/tests/test_qtawesome.py::test_get_fonts_info" %}
+# If you are on Windows, please read https://support.microsoft.com/en-us/kb/3053676 to know how to prevent Windows from blocking the fonts that come with QtAwesome.
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_bundled_font_system_installation" %}  # [win]
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_font_load_from_system_fonts" %}  # [win]
+# E   AttributeError: type object 'QApplication' has no attribute 'desktop'
+# QApplication.desktop() has been removed in Qt 6.
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_browser_init" %}  # [osx]
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_copy" %}  # [osx]
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_filter" %}  # [osx]
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_filter_no_results" %}  # [osx]
 test:
-  requires:
-    # testing pyqt 6 requires additional cdts.
-    - pyqt <6
-    - {{ cdt('mesa-libgl-devel') }}  # [linux]
-    - pip
-  commands:
-    - pip check
+  source_files:
+    - qtawesome/tests
   imports:
     - qtawesome
+  commands:
+    - pip check
+    # Need to test only locally, open ui window is not supported in the build environment.
+    #- qta-browser --version
+    - qta-install-fonts-all-users --help
+    # pyargs not working, tests folder is not in the site-packages dir
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c "pytest -vvv qtawesome/tests{{ deselect_tests }}"  # [linux]
+    - pytest -vvv qtawesome/tests {{ deselect_tests }}  # [not linux]
+  requires:
+    # The qtpy package (a dependency of qtawesome) is an abstraction layer
+    # that works with multiple Qt bindings, but it doesn't install any of them by default.
+    # It checks for installed Qt libraries in this order: PyQt5, PySide2, PyQt6, PySide6.
+    # Since none were found, it raised the QtBindingsNotFoundError.
+    - pyqt
+    - pip
+    - pytest
+    - pytest-timeout
+    - pytest-qt
+    - pytest-mock
 
 about:
   home: https://github.com/spyder-ide/qtawesome
