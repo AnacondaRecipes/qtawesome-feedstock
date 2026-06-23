@@ -1,13 +1,24 @@
 {% set name = "qtawesome" %}
-{% set version = "1.4.1" %}
+{% set version = "1.4.2" %}
+{% set deselect_tests = " --deselect=qtawesome/tests/test_qtawesome.py::test_get_fonts_info" %}
+{% set deselect_tests = 'deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_bundled_font_system_installation"' %}  # [win]
+{% set deselect_tests = 'deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_font_load_from_system_fonts"' %}  # [win]
+{% set deselect_tests = 'deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_browser_init"' %}  # [osx]
+{% set deselect_tests = 'deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_copy"' %}  # [osx]
+{% set deselect_tests = 'deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_filter"' %}  # [osx]
+{% set deselect_tests = 'deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_filter_no_results"' %}  # [osx]
 
+# fonts in the correct place inside the site-packages dir, rather than an exact path match in the tests:
+# If you are on Windows, please read https://support.microsoft.com/en-us/kb/3053676 to know how to prevent Windows from blocking the fonts that come with QtAwesome.
+# E   AttributeError: type object 'QApplication' has no attribute 'desktop'
+# QApplication.desktop() has been removed in Qt 6.
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: d6c5aa545b614fc562769e9eeadf18530e08b8eebe28af4ab5d38131194c9c7b
+  sha256: b2bf9351beb335095006892796f072ffd9755a2d7e5113dc71918dcd9ba4ef4a
 
 build:
   number: 0
@@ -27,17 +38,6 @@ requirements:
     - python
     - qtpy
 
-# fonts in the correct place inside the site-packages dir, rather than an exact path match in the tests:
-{% set deselect_tests = " --deselect=qtawesome/tests/test_qtawesome.py::test_get_fonts_info" %}
-# If you are on Windows, please read https://support.microsoft.com/en-us/kb/3053676 to know how to prevent Windows from blocking the fonts that come with QtAwesome.
-{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_bundled_font_system_installation" %}  # [win]
-{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_font_load_from_system_fonts" %}  # [win]
-# E   AttributeError: type object 'QApplication' has no attribute 'desktop'
-# QApplication.desktop() has been removed in Qt 6.
-{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_browser_init" %}  # [osx]
-{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_copy" %}  # [osx]
-{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_filter" %}  # [osx]
-{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_icon_browser.py::test_filter_no_results" %}  # [osx]
 test:
   source_files:
     - qtawesome/tests
