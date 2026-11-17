@@ -10,7 +10,7 @@ source:
   sha256: b2bf9351beb335095006892796f072ffd9755a2d7e5113dc71918dcd9ba4ef4a
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir --no-build-isolation -vvv
   entry_points:
     - qta-browser=qtawesome.icon_browser:run
@@ -30,6 +30,7 @@ requirements:
 # fonts in the correct place inside the site-packages dir, rather than an exact path match in the tests:
 {% set deselect_tests = " --deselect=qtawesome/tests/test_qtawesome.py::test_get_fonts_info" %}
 # If you are on Windows, please read https://support.microsoft.com/en-us/kb/3053676 to know how to prevent Windows from blocking the fonts that come with QtAwesome.
+{% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_bundled_font_user_installation" %}  # [win]
 {% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_bundled_font_system_installation" %}  # [win]
 {% set deselect_tests = deselect_tests + " --deselect=qtawesome/tests/test_qtawesome.py::test_font_load_from_system_fonts" %}  # [win]
 # E   AttributeError: type object 'QApplication' has no attribute 'desktop'
